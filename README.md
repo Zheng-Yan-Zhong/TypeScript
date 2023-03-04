@@ -18,12 +18,12 @@ npm install typescript -g
 
 ![](https://i.imgur.com/rdVNpvu.png)
 
-```
+```bash
 sudo npm install typesript -g
 ```
 
 接著到專案中
-```
+```bash
 tsc --init
 ```
 
@@ -37,9 +37,11 @@ console.log(name);
 ```
 
 接著在終端機中輸入
-```
+
+```bash
 tsc main.ts
 ```
+
 ![](https://i.imgur.com/AZgCGJA.png)
 
 會回報錯誤，只需要在最後一行輸入
@@ -50,19 +52,19 @@ export {}
 
 ![](https://i.imgur.com/iO9sYs6.png)
 
-```
+```bash
 node main.js
 ```
 
 如果覺得編譯後還要執行麻煩的話
 
 可以寫一個小腳本
-```
+```bash
 tsc main.ts && node main.js
 ```
 ![](https://i.imgur.com/RjkANkO.png)
 
-```
+```bash
 npm run start
 ```
 
@@ -75,7 +77,7 @@ npm install nodemon
 
 ![](https://i.imgur.com/aBIAnbI.png)
 
-```
+```bash
 npm run serve
 ```
 就可以執行熱刷新，也就是存檔後重新執行程式
@@ -131,7 +133,7 @@ npm run serve
 * object
 
 
-```typescript=
+```typescript
 [x] const str: string = 0;
 [v] const str: string = "Dennis";
 
@@ -178,7 +180,7 @@ Enum(枚舉)
 
 今天前端跟後端溝通，假設共同約定好狀態如下
 
-```typescript=
+```typescript
 // 0 成功，並且結束直播
 // 1 直撥中
 // -1 直撥失敗
@@ -190,7 +192,7 @@ const currentStatus: number = 0;
 
 但是，上面的情況會遇到，如果有新人進來，或是時間久了也忘記狀態對應的值，這時候枚舉情況就可以解決以上問題
 
-```typescript=
+```typescript
 enum LiveStatus {
   SUCCESS = 0,
   FAIL = -1,
@@ -206,7 +208,7 @@ if (currentStatus == LiveStatus.SUCCESS) {
 
 ### Function
 
-```typescript=
+```typescript
 function sum(a: number, b: number) {
   return a + b;
 }
