@@ -4,8 +4,8 @@
 * [TS configuration](#TS-configuration)
 * [Grammar](#Grammar)
   * [Data types](#Data-types)
-  * [Enum](#Enum)
   * [Function](#Function)
+  * [Enum](#Enum)
   * [Generics](#Generics)
 
 ## Environment
@@ -174,6 +174,46 @@ npm run serve
 [v] const obj: object = [];
 ```
 
+### Function 
+```typescript
+function count(num: number) {
+  if (num) {
+    return num * num;
+  }
+}
+const value = count(3); //9
+```
+
+如果是要傳入callback
+```typescript
+function callback(fn: (output: string) => void) {
+  // const output = 100; // error type
+  const output = "Hello world!";
+  fn(output); //Hello world!
+}
+
+callback((text) => {
+  console.log(text);
+});
+```
+
+上面由於callback並不會return 任何值，所以須定義return 為void(空白)
+
+舉個例子，如果今天傳入callback需回傳值
+
+```typescript
+function getUser(fn: () => object | null) {
+  const name = fn();
+  console.log(name); //{ name: 'Dennis' }
+  return name;
+}
+
+getUser(() => {
+  return { name: "Dennis" };
+});
+
+```
+
 ### Enum
 
 Enum(枚舉)
@@ -206,17 +246,9 @@ if (currentStatus == LiveStatus.SUCCESS) {
 }
 ```
 
-### Function
-
-```typescript
-function sum(a: number, b: number) {
-  return a + b;
-}
-const num = sum(1, 2);
-```
-
 ### Generics
 Generics(泛型)在於不用立即定義好類型，又可以在呼叫時規定只符合輸入的類型
+
 
 ```typescript
 interface GenericsObject<T> {
@@ -235,3 +267,28 @@ function say<T>(content: T) {
 say<string>("Hello I'm Dennis ");
 ```
 
+定義回傳值
+```typescript
+function getMultiple<T>(arr: T[]): T | null {
+  if (arr.length > 0) {
+    return arr[0];
+  }
+  // return undefined; //error must be null
+  return null;
+}
+
+getMultiple([2, 4, 8]);
+```
+
+多個參數函式
+
+```typescript
+function combine<T>(arr: T[], arr2: T[]): T[] | undefined {
+  if (arr.length == 0 || arr2.length == 0) return undefined;
+  return arr.concat(arr2);
+}
+// const result = combine([1, 2], ["Hello world"]); //error generics can catch input types
+const result = combine<number | string>([1, 2], ["Hello world"]);
+
+console.log(result); //[ 1, 2, 'Hello world' ]
+```
