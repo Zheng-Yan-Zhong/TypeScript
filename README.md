@@ -10,7 +10,7 @@
   * [Interface](#Interface)
   * [Interface V.S Type](#Interface-VS-Type)
   * [Generics](#Generics)
-* 
+  * [Class](#Class) 
 ## Environment
 
 ```
@@ -54,7 +54,7 @@ tsc main.ts
 
 ![](https://i.imgur.com/AZgCGJA.png)
 
-會回報錯誤，只需要在最後一行輸入
+回報錯誤，只需要在最後一行輸入
 ```typescript
 export {}
 ```
@@ -330,4 +330,30 @@ function combine<T>(arr: T[], arr2: T[]): T[] | undefined {
 const result = combine<number | string>([1, 2], ["Hello world"]);
 
 console.log(result); //[ 1, 2, 'Hello world' ]
+```
+
+---
+
+### Class
+
+```typescript!
+class User {
+  name: string;
+  age: number;
+
+  constructor(name: string, age: number) {
+    this.name = name;
+    this.age = age;
+  }
+
+  getUser(): object[] {
+    return [{ name: this.name, age: this.age }];
+  }
+}
+
+const user1 = new User("Dennis", 23);
+console.log(user1); //User { name: 'Dennis', age: 23 }
+console.log(user1.getUser()); //[ { name: 'Dennis', age: 23 } ]
+
+export {};
 ```
