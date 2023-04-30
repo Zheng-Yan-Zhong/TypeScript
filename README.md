@@ -10,7 +10,13 @@
   * [Interface](#Interface)
   * [Interface V.S Type](#Interface-VS-Type)
   * [Generics](#Generics)
-  * [Class](#Class) 
+  * [Class](#Class)
+    * static 
+    * public
+    * private
+    * protected
+    * readonly
+    * abstract 
 ## Environment
 
 ```
@@ -334,8 +340,10 @@ console.log(result); //[ 1, 2, 'Hello world' ]
 
 ---
 
-### Class
+## Class
 
+### public 
+由於public是預設屬性，所以不帶關鍵字預設即為public，並且需建立實體
 ```typescript!
 class User {
   name: string;
@@ -356,4 +364,81 @@ console.log(user1); //User { name: 'Dennis', age: 23 }
 console.log(user1.getUser()); //[ { name: 'Dennis', age: 23 } ]
 
 export {};
+```
+
+### private
+私有屬性只能在其類別中取用，像是建立實體後，必須透過getUser方法才能知道其類別的name、age
+
+```typescript!
+class User {
+  private name: string;
+  private age: number;
+
+  constructor(name: string, age: number) {
+    this.name = name;
+    this.age = age;
+  }
+
+  getUser(): object[] {
+    return [{ name: this.name, age: this.age }];
+  }
+}
+
+const user1 = new User("Dennis", 23);
+console.log(user1.getUser()); //[ { name: 'Dennis', age: 23 } ]
+console.log(user1.name); // error
+
+export {};
+
+```
+### static
+靜態屬性可以使變數或是方法不需建立實體即可使用，並且建立實體後則無法使用
+```typescript!
+class User {
+  protected name: string;
+  public age: number;
+  static note: string = "name be protected & (age、getUser) be public";
+  constructor(name: string, age: number) {
+    this.name = name;
+    this.age = age;
+  }
+
+  getUser(): object[] {
+    return [{ name: this.name, age: this.age }];
+  }
+}
+
+
+console.log(User.note); //name be protected & (age、getUser) be public
+console.log(User.age); //error
+
+export {};
+```
+
+### protected
+protected屬性可以使主類別或是子類別(**繼承主類別的類別**)不需建立實體即可使用，類似static，並且建立實體後無法使用
+
+```typescript!
+class User {
+  protected name: string;
+  public age: number;
+  static note: string = "name be protected & (age、getUser) be public";
+  constructor(name: string, age: number) {
+    this.name = name;
+    this.age = age;
+  }
+
+  getUser(): object[] {
+    return [{ name: this.name, age: this.age }];
+  }
+}
+
+class classLeader extends User {}
+
+const user1 = new classLeader("Dennis", 23);
+console.log(user1.name); //error;
+console.log(classLeader.name); //Dennis
+
+export {};
+
 ```
