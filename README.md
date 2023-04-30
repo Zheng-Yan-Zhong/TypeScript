@@ -6,8 +6,11 @@
   * [Data types](#Data-types)
   * [Function](#Function)
   * [Enum](#Enum)
+  * [Type](#Type)
+  * [Interface](#Interface)
+  * [Interface V.S Type](#Interface-VS-Type)
   * [Generics](#Generics)
-
+* 
 ## Environment
 
 ```
@@ -21,6 +24,13 @@ npm install typescript -g
 ```bash
 sudo npm install typesript -g
 ```
+
+查看版本
+```bash!
+tsc --version
+```
+![](https://i.imgur.com/AWMR391.png)
+
 
 接著到專案中
 ```bash
@@ -52,39 +62,10 @@ export {}
 
 ![](https://i.imgur.com/iO9sYs6.png)
 
+最後使用node執行`.js`檔名
 ```bash
 node main.js
 ```
-
-如果覺得編譯後還要執行麻煩的話
-
-可以寫一個小腳本
-```bash
-tsc main.ts && node main.js
-```
-![](https://i.imgur.com/RjkANkO.png)
-
-```bash
-npm run start
-```
-
-![](https://i.imgur.com/7fXxvf6.png)
-
-當然也可以安裝`nodemon`
-```javascript
-npm install nodemon
-```
-
-![](https://i.imgur.com/aBIAnbI.png)
-
-```bash
-npm run serve
-```
-就可以執行熱刷新，也就是存檔後重新執行程式
-![](https://i.imgur.com/D8QZJkU.png)
-
-![](https://i.imgur.com/JfVdb7R.gif)
-
 
 ---
 
@@ -122,15 +103,15 @@ npm run serve
 
 ### Data types
 
-* string
-* number
-* boolean
-* any
-* null
-* undefined
-* array`[ ]`
-* tuple
-* object
+* `string`
+* `number`
+* `boolean`
+* `any`
+* `null`
+* `undefined`
+* `array`
+* `tuple`
+* `object`
 
 
 ```typescript
@@ -184,6 +165,16 @@ function count(num: number) {
 const value = count(3); //9
 ```
 
+上面的寫法可以標示回傳值，更好閱讀
+
+```typescript!
+function count(num: number): number | void {
+  if (num) {
+    return num * num;
+  }
+}
+```
+
 如果是要傳入callback
 ```typescript
 function callback(fn: (output: string) => void) {
@@ -197,22 +188,7 @@ callback((text) => {
 });
 ```
 
-上面由於callback並不會return 任何值，所以須定義return 為void(空白)
-
-舉個例子，如果今天傳入callback需回傳值
-
-```typescript
-function getUser(fn: () => object | null) {
-  const name = fn();
-  console.log(name); //{ name: 'Dennis' }
-  return name;
-}
-
-getUser(() => {
-  return { name: "Dennis" };
-});
-
-```
+---
 
 ### Enum
 
@@ -245,6 +221,69 @@ if (currentStatus == LiveStatus.SUCCESS) {
   console.log("successful"); //successful
 }
 ```
+
+---
+
+### Type
+
+```typescript!
+type User = {
+  name: string;
+  id: number;
+};
+
+const newUser: User = {
+  name: "Dennis",
+  id: 2,
+};
+
+console.log(newUser); //{ name: 'Dennis', id: 2 }
+```
+
+---
+
+### Interface
+```typescript!
+interface User {
+  name: string;
+  id: number;
+}
+
+const user1: User = {
+  name: "Dennis",
+  id: 2,
+};
+console.log(user1); //{ name: 'Dennis', id: 2 }
+
+export {};
+```
+
+
+### Interface V.S Type
+我們從上面可以發現，既然Type跟Interface可以做一樣的事情，那差別在哪?
+
+>Interface可以繼續定義並且繼承屬性，Type則不行
+```typescript!
+interface User {
+  name: string;
+  id: number;
+}
+
+interface User {
+  age: number;
+}
+
+const user1: User = {
+  name: "Dennis",
+  id: 2,
+  age: 23,
+};
+console.log(user1); //{ name: 'Dennis', id: 2 }
+
+export {};
+```
+
+---
 
 ### Generics
 Generics(泛型)在於不用立即定義好類型，又可以在呼叫時規定只符合輸入的類型
