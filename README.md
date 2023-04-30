@@ -11,12 +11,10 @@
   * [Interface V.S Type](#Interface-VS-Type)
   * [Generics](#Generics)
   * [Class](#Class)
-    * static 
-    * public
-    * private
-    * protected
-    * readonly
-    * abstract 
+    * [public](#public)
+    * [private](#private)
+    * [static](#static)
+    * [protected](#protected)
 ## Environment
 
 ```
@@ -232,7 +230,7 @@ if (currentStatus == LiveStatus.SUCCESS) {
 
 ### Type
 
-```typescript!
+```typescript
 type User = {
   name: string;
   id: number;
@@ -249,7 +247,7 @@ console.log(newUser); //{ name: 'Dennis', id: 2 }
 ---
 
 ### Interface
-```typescript!
+```typescript
 interface User {
   name: string;
   id: number;
@@ -269,7 +267,7 @@ export {};
 我們從上面可以發現，既然Type跟Interface可以做一樣的事情，那差別在哪?
 
 >Interface可以繼續定義並且繼承屬性，Type則不行
-```typescript!
+```typescript
 interface User {
   name: string;
   id: number;
@@ -344,7 +342,7 @@ console.log(result); //[ 1, 2, 'Hello world' ]
 
 ### public 
 由於public是預設屬性，所以不帶關鍵字預設即為public，並且需建立實體
-```typescript!
+```typescript
 class User {
   name: string;
   age: number;
@@ -369,7 +367,7 @@ export {};
 ### private
 私有屬性只能在其類別中取用，像是建立實體後，必須透過getUser方法才能知道其類別的name、age
 
-```typescript!
+```typescript
 class User {
   private name: string;
   private age: number;
@@ -393,7 +391,7 @@ export {};
 ```
 ### static
 靜態屬性可以使變數或是方法不需建立實體即可使用，並且建立實體後則無法使用
-```typescript!
+```typescript
 class User {
   protected name: string;
   public age: number;
@@ -418,7 +416,7 @@ export {};
 ### protected
 protected屬性可以使主類別或是子類別(**繼承主類別的類別**)不需建立實體即可使用，類似static，並且建立實體後無法使用
 
-```typescript!
+```typescript
 class User {
   protected name: string;
   public age: number;
