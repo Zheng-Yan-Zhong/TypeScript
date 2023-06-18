@@ -169,7 +169,7 @@ function count(num: number) {
 const value = count(3); //9
 ```
 
-上面的寫法可以標示回傳值，更好閱讀
+標示回傳值可以讓呼叫該函式更好閱讀
 
 ```typescript!
 function count(num: number): number | void {
