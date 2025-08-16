@@ -1,0 +1,26 @@
+{
+  "name": "typescript",
+  "version": "1.0.0",
+  "description": "* [Environment](#Environment) * [TS configuration](#TS-configuration) * [Grammar](#Grammar)   * [Data types](#Data-types)   * [Function](#Function)   * [Enum](#Enum)   * [Type](#Type)   * [Interface](#Interface)   * [Interface V.S Type](#Interface-VS-Type)   * [Generics](#Generics)   * [Class](#Class)     * [public](#public)     * [private](#private)     * [static](#static)     * [protected](#protected) ## Environment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zheng-Yan-Zhong/TypeScript.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Zheng-Yan-Zhong/TypeScript/issues"
+  },
+  "homepage": "https://github.com/Zheng-Yan-Zhong/TypeScript#readme",
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "ts-node": "^10.9.2",
+    "tslint": "^6.1.3",
+    "typescript": "^5.9.2"
+  }
+}
