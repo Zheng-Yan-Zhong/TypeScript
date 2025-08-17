@@ -2,19 +2,27 @@
 
 - [TypeScript](#typescript)
   - [Introduction](#introduction)
-  - [Grammar](#grammar)
-    - [Data types](#data-types)
+  - [Data types](#data-types)
+  - [Union Types](#union-types)
+  - [Type](#type)
+  - [Interface](#interface)
+  - [Interface V.S Type](#interface-vs-type)
+  - [Enum](#enum)
+  - [Generics](#generics)
     - [Function](#function)
-    - [Enum](#enum)
-    - [Type](#type)
-    - [Interface](#interface)
-    - [Interface V.S Type](#interface-vs-type)
-    - [Generics](#generics)
-  - [Class](#class)
+    - [Interface](#interface-1)
+    - [Class](#class)
+  - [Key-of](#key-of)
+  - [Type-of](#type-of)
+  - [Class](#class-1)
     - [public](#public)
     - [private](#private)
     - [static](#static)
     - [protected](#protected)
+    - [implement](#implement)
+    - [extend](#extend)
+    - [override](#override)
+    - [abstract](#abstract)
   - [Environment](#environment)
   - [tsconfig.json](#tsconfigjson)
   - [tslint.json](#tslintjson)
@@ -39,19 +47,20 @@ message(); // TypeError: message is not a function
 
 從以上非常簡單的範例我們可以清楚知道，TypeScript 所要做到的就是防止我們去猜測(guessing)該變數(variable)的型別，從一開始就 type annotation。
 
-## Grammar
+## Data types
 
-### Data types
+- primitives
+  - `string`
+  - `number`
+  - `boolean`
 
-- `string`
-- `number`
-- `boolean`
-- `any`
-- `null`
-- `undefined`
-- `array`
-- `tuple`
-- `object`
+* `any`
+* `function`
+* `null`
+* `undefined`
+* `array`
+* `tuple`
+* `object`
 
 ```typescript
 [x] const str: string = 0;
@@ -92,37 +101,21 @@ message(); // TypeError: message is not a function
 // 物件，對於JavaScript、TypeScript來說陣列也是物件的一種
 [v] const obj: object = {};
 [v] const obj: object = [];
-```
 
-### Function
 
-```typescript
-function count(num: number) {
-  if (num) {
-    return num * num;
-  }
-}
-const value = count(3); //9
-```
-
-標示回傳值可以讓呼叫該函式更好閱讀
-
-```typescript!
 function count(num: number): number | void {
   if (num) {
     return num * num;
   }
 }
-```
 
-如果是要傳入 callback
-
-```typescript
+//傳入 callback
 function callback(fn: (output: string) => void) {
   // const output = 100; // error type
   const output = "Hello world!";
   fn(output); //Hello world!
 }
+
 
 callback((text) => {
   console.log(text);
@@ -131,7 +124,92 @@ callback((text) => {
 
 ---
 
-### Enum
+## Union Types
+
+當我們使用 Union 定義型別時，必須注意，像是 number 不會有 toLowerCase 的 API。
+
+```typescript
+function printId(id: string | number) {
+  console.log(id.toLowerCase()); //Property 'toLowerCase' does not exist on type 'number'.
+}
+```
+
+必須使用 if 的區塊進行判斷
+
+```typescript
+function printId(id: string | number) {
+  if(typeof id == 'string') {
+    console.log(id.toLowerCase());
+  }else {
+    ...
+  }
+}
+```
+
+## Type
+
+```typescript
+type User = {
+  name: string;
+  id: number;
+};
+
+const newUser: User = {
+  name: "Dennis",
+  id: 2,
+};
+
+console.log(newUser); //{ name: 'Dennis', id: 2 }
+```
+
+---
+
+## Interface
+
+```typescript
+interface User {
+  name: string;
+  id: number;
+}
+
+const user1: User = {
+  name: "Dennis",
+  id: 2,
+};
+console.log(user1); //{ name: 'Dennis', id: 2 }
+
+export {};
+```
+
+## Interface V.S Type
+
+我們從上面可以發現，既然 Type 跟 Interface 可以做一樣的事情，那差別在哪?
+
+> Interface 可以繼續定義並且繼承屬性，Type 則不行
+
+```typescript
+interface User {
+  name: string;
+  id: number;
+}
+
+interface User {
+  age: number;
+}
+
+const user1: User = {
+  name: "Dennis",
+  id: 2,
+  age: 23,
+};
+console.log(user1); //{ name: 'Dennis', id: 2 }
+
+export {};
+```
+
+---
+
+## Enum
 
 Enum(枚舉)
 
@@ -165,118 +243,114 @@ if (currentStatus == LiveStatus.SUCCESS) {
 
 ---
 
-### Type
+## Generics
+
+Generics(泛型)的好處在於可以讓該組件重複使用，避免類型寫死。
+
+### Function
 
 ```typescript
-type User = {
-  name: string;
-  id: number;
-};
-
-const newUser: User = {
-  name: "Dennis",
-  id: 2,
-};
-
-console.log(newUser); //{ name: 'Dennis', id: 2 }
+function sayHi<T>(arg: T): T {
+  return arg;
+}
 ```
 
----
+```typescript
+const sayHi = <T>(arg: T): T => arg;
+
+function getProperty<Type, Key extends keyof Type>(obj: Type, key: Key) {
+  return obj[key];
+}
+
+let x = { a: 1, b: 2, c: 3, d: 4 };
+
+getProperty(x, "a");
+getProperty(x, "m"); //Argument of type '"m"' is not assignable to parameter of type '"a" | "b" | "c" | "d"'
+```
 
 ### Interface
 
 ```typescript
-interface User {
-  name: string;
-  id: number;
+interface GenericIdentityFn {
+  <T>(arg: T): T;
 }
 
-const user1: User = {
-  name: "Dennis",
-  id: 2,
-};
-console.log(user1); //{ name: 'Dennis', id: 2 }
-
-export {};
-```
-
-### Interface V.S Type
-
-我們從上面可以發現，既然 Type 跟 Interface 可以做一樣的事情，那差別在哪?
-
-> Interface 可以繼續定義並且繼承屬性，Type 則不行
-
-```typescript
-interface User {
-  name: string;
-  id: number;
+function identity<Type>(arg: Type): Type {
+  return arg;
 }
 
-interface User {
-  age: number;
-}
-
-const user1: User = {
-  name: "Dennis",
-  id: 2,
-  age: 23,
-};
-console.log(user1); //{ name: 'Dennis', id: 2 }
-
-export {};
-```
-
----
-
-### Generics
-
-Generics(泛型)在於不用立即定義好類型，又可以在呼叫時規定只符合輸入的類型
-
-```typescript
-interface GenericsObject<T> {
-  contents: T;
-}
-
-let news: GenericsObject<string> = {
-  contents: "Good morning!",
-};
+const fn1: GenericIdentityFn = identity;
 ```
 
 ```typescript
 function say<T>(content: T) {
   console.log(content);
 }
-say<string>("Hello I'm Dennis ");
+say<string>("Hello I'm Dennis.");
 ```
 
-定義回傳值
+### Class
 
 ```typescript
-function getMultiple<T>(arr: T[]): T | null {
-  if (arr.length > 0) {
-    return arr[0];
+class GenericAdder<T extends number | string> {
+  initialValue: T;
+
+  constructor(initialValue: T) {
+    this.initialValue = initialValue;
   }
-  // return undefined; //error must be null
-  return null;
-}
 
-getMultiple([2, 4, 8]);
+  add(arg1: T, arg2: T): T {
+    return arg1 + arg2; //Operator '+' cannot be applied to types 'T' and 'T'.
+  }
+}
 ```
 
-多個參數函式
+我們可以看到，即使我們讓泛型參數縮小為 number 及 string， `return arg1 + arg2` 對於編譯器來說有可能 string + number。
+
+我們必須確認 arguments 的類型皆為相同。
 
 ```typescript
-function combine<T>(arr: T[], arr2: T[]): T[] | undefined {
-  if (arr.length == 0 || arr2.length == 0) return undefined;
-  return arr.concat(arr2);
-}
-// const result = combine([1, 2], ["Hello world"]); //error generics can catch input types
-const result = combine<number | string>([1, 2], ["Hello world"]);
-
-console.log(result); //[ 1, 2, 'Hello world' ]
+  add(arg1: T, arg2: T): T {
+    if (typeof arg1 === "number" && typeof arg2 === "number") {
+      return (arg1 + arg2) as T;
+    }
+    if (typeof arg1 === "string" && typeof arg2 === "string") {
+      return (arg1 + arg2) as T;
+    }
+    throw new Error("invalid type"); // throw Error = never
+  }
 ```
+
+最後使用 throw Error 讓編譯器知道有錯誤發生請中斷程式，並且不會回傳任何值。
 
 ---
+
+## Key-of
+
+```typescript
+function getValue<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
+}
+
+const user1 = { id: 1, name: "Bob" };
+
+const id = getValue(user1, "id"); // number
+const name = getValue(user1, "name"); // string
+getValue(user, "age"); //Argument of type '"age"' is not assignable to parameter of type
+```
+
+## Type-of
+
+抓出 person 的型別
+
+```typescript
+const person = {
+  name: "Alice",
+  age: 25,
+};
+
+type Person = typeof person; // {name: string, age: number}
+```
 
 ## Class
 
@@ -383,6 +457,99 @@ console.log(user1.name); //error;
 console.log(classLeader.name); //Dennis
 
 export {};
+```
+
+### implement
+
+```typescript
+interface Car {
+  shift(): void;
+}
+
+class Audi implements Car {}
+/**
+ * Class 'Audi' incorrectly implements interface 'Car'.
+  Property 'shift' is missing in type 'Audi' but required in type 'Car'.
+ */
+```
+
+```typescript
+interface Car {
+  shift(): void;
+}
+
+class Audi implements Car {
+  shift() {
+    console.log("");
+  }
+}
+```
+
+### extend
+
+```typescript
+class Car {
+  move(): void {
+    console.log("moving");
+  }
+}
+
+class Toyota extends Car {}
+
+const t_car = new Toyota();
+t_car.move();
+```
+
+### override
+
+覆寫既有 method
+
+```typescript
+interface Shout {
+  shout(): void;
+}
+class Animal implements Shout {
+  // shout = (): void => console.log("...");
+  shout(): void {
+    console.log("...");
+  }
+}
+
+class Cat extends Animal {
+  shout() {
+    console.log("meow....");
+  }
+}
+
+const cat = new Cat();
+cat.shout(); //meow....
+```
+
+### abstract
+
+抽象的精髓在於，可以實作部分`方法`，並且要求子類別實作其餘的介面
+
+```typescript
+abstract class Car {
+  move(): void {
+    console.log("moving");
+  }
+
+  abstract shift(): void;
+}
+
+class Toyota extends Car {} //Non-abstract class 'Toyota' does not implement inherited abstract member shift from class 'Car'.
+
+const t_car = new Toyota();
+t_car.move();
+```
+
+```typescript
+class Toyota extends Car {
+  shift() {
+    console.log("...");
+  }
+}
 ```
 
 ## Environment
